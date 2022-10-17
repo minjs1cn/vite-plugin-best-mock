@@ -1,8 +1,17 @@
 {
 	"name": "vite-plugin-best-mock",
-	"version": "0.0.1.beta",
+	"version": "0.0.1.beta.1",
 	"main": "lib/index.js",
 	"license": "MIT",
+	"files": [
+		"lib"
+	],
+	"keywords": [
+		"vite",
+		"plugin",
+		"typescript",
+		"mock"
+	],
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc"

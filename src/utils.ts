@@ -38,7 +38,7 @@ export function parse(query: string) {
 export function bodyParse(req: any) {
 	return new Promise((resolve) => {
 		let data = '';
-		req.on('data', (chunk) => {
+		req.on('data', (chunk: string) => {
 			data += chunk;
 		});
 		req.on('end', () => {
