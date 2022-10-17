@@ -6,19 +6,14 @@ const formDataJsonString = JSON.stringify(plainFormData);
 
 formData.append('file', new Blob(['1']));
 
-fetch('/api/role/1/permission?type=123', {
-	method: 'post',
+fetch('/user', {
+	method: 'get',
 
 	headers: {
-		'Content-Type': 'multipart/form-data',
+		// 'Content-Type': 'multipart/form-data',
 		// Accept: 'application/json',
 	},
-	body: formDataJsonString,
+	// body: formData,
 })
 	.then((res) => res.json())
 	.then(console.log);
-
-// @ts-ignore
-// import routes from 'virtual:routes';
-
-// console.log(msg);

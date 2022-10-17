@@ -1,21 +1,27 @@
-import { useMiddleware } from './middleware';
+import useMock, { MockConfig } from './middlewares/mock';
 import { PluginOption } from 'vite';
-import { BestMockConfig } from './type';
-import { BestMockDefaultConfig } from './config';
-import bodyParser from 'body-parser';
+import useMultiparty, {
+	MultipartyConfig,
+} from './middlewares/connect-multiparty';
+import queryString from './middlewares/query-string';
 
-export const BestMockPlugin = (c?: Partial<BestMockConfig>) => {
-	const config = {
-		...BestMockDefaultConfig,
-		...c,
-	};
+interface MockPluginConfig extends MockConfig {
+	multiparty: MultipartyConfig;
+}
 
+function mockPlugin({
+	multiparty: multipartConfig,
+	...rest
+}: Partial<MockPluginConfig> = {}) {
 	return {
 		name: 'vite-plugin-best-mock',
 
 		configureServer(server) {
-			server.middlewares.use(bodyParser.json());
-			server.middlewares.use(useMiddleware(config));
+			server.middlewares.use(queryString());
+			server.middlewares.use(useMultiparty(multipartConfig));
+			server.middlewares.use(useMock(rest));
 		},
 	} as PluginOption;
-};
+}
+
+export { useMock, mockPlugin, useMultiparty };

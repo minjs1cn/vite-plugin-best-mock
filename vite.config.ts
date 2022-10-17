@@ -1,11 +1,13 @@
-import { BestMockPlugin } from './src';
+import { mockPlugin } from './src';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [
-		BestMockPlugin({
+		mockPlugin({
 			dir: 'mock',
-			prefix: '/api',
+			// prefix: '/api',
+			timeout: [0, 10],
+			logger: true,
 		}),
 	],
 });

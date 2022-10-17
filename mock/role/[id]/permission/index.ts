@@ -10,7 +10,6 @@ export function get(id: string) {
 }
 
 export async function post(id: string, req: any, res: any) {
-	console.log(req.body.file);
 	return {
 		id,
 		type: 'permission',
