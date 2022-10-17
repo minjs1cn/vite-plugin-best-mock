@@ -21,9 +21,9 @@ npm i  mockjs -S
 ```
 
 ```bash
-yarn add vite-plugin-mock -D
+yarn add vite-plugin-best-mock -D
 # or
-npm i vite-plugin-mock -D
+npm i vite-plugin-best-mock -D
 ```
 
 ### Example
@@ -33,19 +33,10 @@ npm i vite-plugin-mock -D
 ```bash
 
 # ts example
-cd ./examples/ts-examples
-
 yarn install
 
-yarn serve
+yarn dev
 
-# js example
-
-cd ./examples/js-examples
-
-yarn install
-
-yarn serve
 ```
 
 ## Usage
@@ -61,37 +52,23 @@ Different from the production environment, you can view the network request reco
 ```ts
 import { UserConfigExport, ConfigEnv } from 'vite'
 
-import { viteMockServe } from 'vite-plugin-mock'
-import vue from '@vitejs/plugin-vue'
+import { mockPlugin } from 'vite-plugin-mock'
 
 export default ({ command }: ConfigEnv): UserConfigExport => {
   return {
     plugins: [
       vue(),
-      viteMockServe({
-        // default
-        mockPath: 'mock',
-        localEnabled: command === 'serve',
-      }),
+      mockPlugin(),
     ],
   }
 }
 ```
 
-- viteMockServe Options
+- Options
 
 ```ts
 {
-    mockPath?: string;
-    supportTs?: boolean;
-    ignore?: RegExp | ((fileName: string) => boolean);
-    watchFiles?: boolean;
-    localEnabled?: boolean;
-    ignoreFiles?: string[];
-    configPath?: string;
-    prodEnabled?: boolean;
-    injectFile?: string;
-    injectCode?: string;
+
 }
 ```
 
