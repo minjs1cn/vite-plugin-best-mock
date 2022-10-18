@@ -1,4 +1,4 @@
-import useMock, { MockConfig } from './middlewares/mock';
+import useMock, { MockConfig, Req, Res } from './middlewares/mock';
 import { PluginOption } from 'vite';
 import useMultiparty, {
 	MultipartyConfig,
@@ -23,5 +23,11 @@ function mockPlugin({
 		},
 	} as PluginOption;
 }
+
+export function definedApi(fun: MockMethod) {
+	return fun;
+}
+
+export type MockMethod = (req: Req, res: Res) => any;
 
 export { useMock, mockPlugin, useMultiparty };

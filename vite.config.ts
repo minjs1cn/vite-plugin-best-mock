@@ -5,9 +5,8 @@ export default defineConfig({
 	plugins: [
 		mockPlugin({
 			dir: 'mock',
-			// prefix: '/api',
+			prefix: '/api',
 			timeout: [0, 10],
-			logger: true,
 		}),
 	],
 });

@@ -1,19 +1,19 @@
-// /role/1/permission
+import { MockMethod } from '../../../../src';
 
-import fs from 'fs/promises';
+export const get: MockMethod = (req, res) => {
+	const { id } = req.query || {};
 
-export function get(id: string) {
 	return {
 		id,
 		type: 'permission',
 	};
-}
+};
 
-export async function post(id: string, req: any, res: any) {
+export const post: MockMethod = async (req: any, res: any) => {
+	const { id } = req.query || {};
+
 	return {
 		id,
 		type: 'permission',
-		...req.body,
-		...req.query,
 	};
-}
+};

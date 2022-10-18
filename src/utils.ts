@@ -1,5 +1,11 @@
 import fs from 'fs/promises';
 
+export function toBigHump(str: string) {
+	let res = str.replace(/-(\w)/g, ($1) => $1.toLocaleUpperCase());
+	res = res.substring(0, 1).toLocaleUpperCase() + res.substring(1);
+	return res;
+}
+
 export function requireApi(url: string) {
 	// 删除require缓存，修改mock数据不需要重启服务
 	delete require.cache[url];
@@ -45,8 +51,8 @@ export function randomIn(min: number, max: number) {
  * 延迟时间
  * @param time - 延迟时间
  */
-export function delay(time: number) {
+export function delay(time: number): Promise<number> {
 	return new Promise((resolve) => {
-		setTimeout(resolve, time);
+		setTimeout(() => resolve(time), time);
 	});
 }

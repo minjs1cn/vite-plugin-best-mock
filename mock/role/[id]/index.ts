@@ -1,10 +1,19 @@
-// /api/user/1
-export function get(id: string, req: any, res: any) {
-	// const {  } = req.query;
-	// res.end({
-	// 	name: '清扬',
-	// })
+import { MockMethod } from '../../../src';
+
+export const get: MockMethod = (req, res) => {
+	const { id } = req.query || {};
+
 	return {
-		name: '清扬',
+		id,
+		type: 'permission',
 	};
-}
+};
+
+export const post: MockMethod = async (req: any, res: any) => {
+	const { id } = req.body || {};
+
+	return {
+		id,
+		type: 'permission',
+	};
+};

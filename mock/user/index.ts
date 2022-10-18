@@ -1,26 +1,17 @@
-export function get() {
-	return [
-		{
-			id: 1,
-			name: 'zza',
-		},
-	];
-}
+import { MockMethod } from '../../src';
 
-export function post() {
-	return [
-		{
-			id: 1,
-			name: 'zza',
-		},
-	];
-}
+export const get: MockMethod = (req) => {
+	const { id } = req.query || {};
+	return {
+		id,
+		name: '清扬',
+	};
+};
 
-export function patch() {
-	return [
-		{
-			id: 1,
-			name: 'zza',
-		},
-	];
-}
+export const post: MockMethod = (req) => {
+	const { id } = req.body || {};
+	return {
+		id,
+		name: '清扬',
+	};
+};

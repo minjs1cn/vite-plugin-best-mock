@@ -3,7 +3,7 @@ import { mkdir } from 'fs/promises';
 import { FormOptions } from 'multiparty';
 import { join } from 'path';
 import { Connect } from 'vite';
-import { isDirExisted, isFileExisted } from '../utils';
+import { isDirExisted } from '../utils';
 
 export interface MultipartyConfig extends FormOptions {}
 

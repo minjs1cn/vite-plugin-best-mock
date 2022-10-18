@@ -1,20 +1,19 @@
-// /api/user/1
-export function get(id: string) {
-	// const {  } = req.query;
-	// res.end({
-	// 	name: '清扬',
-	// })
-	return {
-		name: '清扬',
-	};
-}
+import { MockMethod } from '../../src';
 
-export function post(id: string) {
-	// const {  } = req.body;
-	// res.end({
-	// 	name: '清扬',
-	// })
+export const get: MockMethod = (req, res) => {
+	const { id } = req.query || {};
+	res.end(
+		JSON.stringify({
+			id,
+			name: 'qingyang11',
+		}),
+	);
+};
+
+export const post: MockMethod = (req) => {
+	const { id } = req.query || {};
 	return {
-		name: '清扬',
+		id,
+		name: 'qingyang',
 	};
-}
+};
