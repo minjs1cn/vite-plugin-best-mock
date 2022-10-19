@@ -1,6 +1,6 @@
 {
 	"name": "vite-plugin-best-mock",
-	"version": "0.0.1-alpha-1",
+	"version": "0.0.1-alpha-2",
 	"description": "A mock Plugin for vite",
 	"main": "lib/index.js",
 	"license": "MIT",
@@ -31,6 +31,7 @@
 	"homepage": "https://github.com/minjs1cn/vite-plugin-best-mock/tree/main/#readme",
 	"scripts": {
 		"dev": "vite",
+		"dev:build": "vite build",
 		"build": "tsc"
 	},
 	"peerDependencies": {

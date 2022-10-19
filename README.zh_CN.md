@@ -4,9 +4,9 @@
 
 [![npm][npm-img]][npm-url] [![node][node-img]][node-url]
 
-Provide local and prod mocks for vite.
+为 Vite 提供开发和生产环境的 Mock 服务
 
-A mock plugin for vite, and support the local environment and production environment at the same time. Connect service middleware is used locally, mockjs is used online.
+一个 Vite 的 Mock 插件, 同时支持本地和线上环境. 本地是基于 Connect 中间件实现的, 线上是通过 mockjs 实现的（对，现在还没有实现^~^）。
 
 ### Install (yarn or npm)
 
@@ -43,9 +43,7 @@ yarn dev
 
 **Development environment**
 
-The development environment is implemented using Connect middleware。
-
-Different from the production environment, you can view the network request record in the Google Chrome console
+开发环境是基于 Connect 中间件实现的
 
 - Config plugin in vite.config.ts
 
@@ -84,7 +82,7 @@ interface MockPluginConfig {
 
 **default:** `'mock'`
 
-Set the folder where the mock .ts file is stored
+存放 mock 文件的文件夹路径
 
 ### localEnabled
 
@@ -92,7 +90,7 @@ Set the folder where the mock .ts file is stored
 
 **default:** `command === 'serve'`
 
-Set whether to enable the local mock .ts file, do not open it in the production environment
+是否允许本地环境开启 mock 服务
 
 ### prodEnabled
 
@@ -100,7 +98,7 @@ Set whether to enable the local mock .ts file, do not open it in the production 
 
 **default:** `command !=='serve'`
 
-Set whether to enable mock function for packaging
+是否允许线上环境开启 mock 服务
 
 ### logger
 
@@ -108,7 +106,7 @@ Set whether to enable mock function for packaging
 
 **default:** `true`
 
-Whether to display the request log on the console
+是否开启 log 日志
 
 ### multiparty
 
@@ -116,31 +114,50 @@ Whether to display the request log on the console
 
 **default:** `{}`
 
-If you pass multiparty to mockPlugin(), they are passed directly into [multiparty](https://www.npmjs.com/package/multiparty).
+如果你传了这个配置，我会把整个配置直接透传给 [multiparty](https://www.npmjs.com/package/multiparty).
 
 ## Mock file example
 
 `/path/mock`
 
 ```ts
-// test.ts
+// user.ts
 
 import { MockMethod } from 'vite-plugin-best-mock'
 
-```
+/**
+ * url: /user
+ * method: get
+ */
+export const get: MockMethod = (req) => {
+	const { id } = req.query || {};
+	return {
+		id,
+		name: 'qingyang',
+	};
+};
 
+/**
+ * url: /user
+ * method: post
+ */
+export const post: MockMethod = (req) => {
+	const { id } = req.body || {};
+	return {
+		id,
+		name: 'qingyang',
+	};
+};
+```
 ### MockMethod
 
 ```ts
+
 export type MockMethod = (req: Req, res: Res) => void;
+
 ```
 
-you can refer to [Next.js](https://nextjs.org/docs/api-routes/dynamic-api-routes) Dynamic api routes.
-
-## Note
-
-- The node module cannot be used in the mock .ts file, otherwise the production environment will fail
-- Mock is used in the production environment, which is only suitable for some test environments. Do not open it in the formal environment to avoid unnecessary errors. At the same time, in the production environment, it may affect normal Ajax requests, such as file upload failure, etc.
+你可以参考 [Next.js](https://nextjs.org/docs/api-routes/dynamic-api-routes) 约定式路由
 
 ## License
 

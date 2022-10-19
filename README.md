@@ -123,10 +123,33 @@ If you pass multiparty to mockPlugin(), they are passed directly into [multipart
 `/path/mock`
 
 ```ts
-// test.ts
+// user.ts
 
 import { MockMethod } from 'vite-plugin-best-mock'
 
+/**
+ * url: /user
+ * method: get
+ */
+export const get: MockMethod = (req) => {
+	const { id } = req.query || {};
+	return {
+		id,
+		name: 'qingyang',
+	};
+};
+
+/**
+ * url: /user
+ * method: post
+ */
+export const post: MockMethod = (req) => {
+	const { id } = req.body || {};
+	return {
+		id,
+		name: 'qingyang',
+	};
+};
 ```
 
 ### MockMethod
@@ -137,10 +160,6 @@ export type MockMethod = (req: Req, res: Res) => void;
 
 you can refer to [Next.js](https://nextjs.org/docs/api-routes/dynamic-api-routes) Dynamic api routes.
 
-## Note
-
-- The node module cannot be used in the mock .ts file, otherwise the production environment will fail
-- Mock is used in the production environment, which is only suitable for some test environments. Do not open it in the formal environment to avoid unnecessary errors. At the same time, in the production environment, it may affect normal Ajax requests, such as file upload failure, etc.
 
 ## License
 

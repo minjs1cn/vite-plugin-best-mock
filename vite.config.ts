@@ -1,7 +1,7 @@
 import { mockPlugin } from './src';
-import { defineConfig } from 'vite';
+import { UserConfigExport, ConfigEnv } from 'vite';
 
-export default defineConfig({
+export default ({ command }: ConfigEnv): UserConfigExport => ({
 	plugins: [
 		mockPlugin({
 			dir: 'mock',

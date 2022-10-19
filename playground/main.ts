@@ -1,3 +1,9 @@
+fetch('/api/a/?id=123', {
+	method: 'get',
+})
+	.then((res) => res.json())
+	.then(console.log);
+
 fetch('/api/user/1/?type=123', {
 	method: 'get',
 })

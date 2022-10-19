@@ -101,11 +101,14 @@ export default function mock(
 		if (originalUrl?.startsWith(prefix)) {
 			try {
 				const theOriginUrl = originalUrl.replace(prefix, '');
-				const [apiUrl] = theOriginUrl.split('?');
+				let [apiUrl] = theOriginUrl.split('?');
+				if (apiUrl.endsWith('/')) {
+					apiUrl = apiUrl.slice(0, -1);
+				}
 				logger.addLog('url', apiUrl);
 
 				const result = await Promise.all(
-					['.ts', '/index.ts'].map((item) =>
+					['.ts', '/index.ts', '.js', '/index.js'].map((item) =>
 						isFileExisted(join(mockDir, apiUrl + item)),
 					),
 				);
@@ -142,7 +145,7 @@ export default function mock(
 							return file === u;
 						});
 						if (!file) {
-							throw Error('请求路径不对');
+							throw Error('The request url is not existed: ' + apiUrl);
 						}
 						root = join(root, file);
 					}
@@ -151,7 +154,7 @@ export default function mock(
 				logger.reqLog();
 				await response(root);
 			} catch (error) {
-				// console.error(error);
+				console.error(error);
 				next();
 			}
 			return;
