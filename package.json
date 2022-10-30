@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-best-mock",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A mock Plugin for vite",
   "main": "./lib/index.js",
   "license": "MIT",
@@ -8,6 +8,7 @@
   "files": [
     "lib"
   ],
+  "type": "module",
   "engines": {
     "node": "^14.20.0"
   },
