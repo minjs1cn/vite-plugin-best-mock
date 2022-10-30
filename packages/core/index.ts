@@ -1,9 +1,9 @@
-import useMock, { MockConfig, Req, Res } from "./middlewares/mock";
+import useMock, { MockConfig, Req, Res } from "./src/middlewares/mock";
 import { normalizePath, PluginOption } from "vite";
 import useMultiparty, {
   MultipartyConfig,
-} from "./middlewares/connect-multiparty";
-import queryString from "./middlewares/query-string";
+} from "./src/middlewares/connect-multiparty";
+import queryString from "./src/middlewares/query-string";
 import path from "path";
 
 interface MockPluginConfig extends MockConfig {
@@ -75,4 +75,4 @@ export function definedApi(fun: MockMethod) {
 
 export type MockMethod = (req: Req, res: Res) => any;
 
-export { useMock, mockPlugin as default, useMultiparty };
+export { useMock, mockPlugin, mockPlugin as default, useMultiparty };

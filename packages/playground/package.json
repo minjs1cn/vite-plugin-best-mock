@@ -1,0 +1,19 @@
+{
+  "name": "playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "rimraf lib && tsc",
+    "preview": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "pkg-get": "^0.0.2",
+    "core": "workspace:*"
+  }
+}
