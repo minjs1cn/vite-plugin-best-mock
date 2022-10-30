@@ -1,0 +1,22 @@
+{
+  "name": "core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./lib/index.js",
+  "scripts": {
+    "build": "rimraf lib && tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.1.2",
+    "ts-node": "^10.9.1",
+    "qs": "^6.11.0",
+    "connect-multiparty": "^2.2.0",
+    "colors": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/qs": "^6.9.7"
+  }
+}

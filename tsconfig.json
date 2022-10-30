@@ -3,7 +3,10 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM",
+    ],
     "moduleResolution": "Node",
     "strict": true,
     "sourceMap": true,
@@ -17,5 +20,8 @@
     "outDir": "lib",
     "declaration": true
   },
-  "include": ["src"]
+  "include": [
+    "packages/*/src",
+    "packages/core/index.ts"
+  ]
 }

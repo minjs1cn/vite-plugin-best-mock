@@ -1,4 +1,4 @@
-import { mockPlugin } from "./src";
+import { mockPlugin } from "core";
 import { UserConfigExport, ConfigEnv } from "vite";
 import pkg from "./package.json";
 import { getName } from "pkg-get";
