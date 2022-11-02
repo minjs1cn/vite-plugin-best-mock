@@ -75,4 +75,4 @@ export function definedApi(fun: MockMethod) {
 
 export type MockMethod = (req: Req, res: Res) => any;
 
-export { useMock, mockPlugin as default, useMultiparty };
+export { useMock, mockPlugin, useMultiparty };

@@ -6,11 +6,11 @@ export function toBigHump(str: string) {
 	return res;
 }
 
-export function requireApi(url: string) {
-	// 删除require缓存，修改mock数据不需要重启服务
-	delete require.cache[url];
-	return require(url);
-}
+// export function requireApi(url: string) {
+// 	// 删除require缓存，修改mock数据不需要重启服务
+// 	delete require.cache[url];
+// 	return require(url);
+// }
 /**
  * 是否是文件或文件是否存在
  * @param url
