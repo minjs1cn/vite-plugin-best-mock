@@ -1,6 +1,6 @@
 import { Connect } from "vite";
 import { store } from "./store";
-import { delayApi } from "./utils";
+import { delayApi, parseJson } from "./utils";
 import type { ServerResponse } from "http";
 import { getMockByUrl } from "./getMockByUrl";
 
@@ -55,6 +55,9 @@ export function useMock(
     const url = originalUrl.split("?")[0];
 
     if (url && url.startsWith(prefix)) {
+      res.setHeader("Content-Type", "application/json");
+      res.statusCode = 200;
+      req.body = await parseJson(req);
       // 处理一下请求地址和请求方式
       const mockUrl = urlFormat(url.replace(prefix, ""));
       const mockMethod = method.toLocaleLowerCase();
@@ -69,9 +72,20 @@ export function useMock(
             // 延迟
             await delayApi(api["timeout"] || timeout);
             // 返回结果
-            const response = api(req, res);
-            if (response) {
-              res.end(JSON.stringify(response));
+            try {
+              const response = await api(req, res);
+              if (response) {
+                res.end(JSON.stringify(response));
+              }
+            } catch (error) {
+              // mock文件执行抱错
+              res.end(
+                JSON.stringify({
+                  message: `mock file: ${mock.router.join(
+                    "/"
+                  )} ${method} function failed`,
+                })
+              );
             }
           } else {
             // mock文件中缺少相应请求的方法

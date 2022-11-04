@@ -1,6 +1,4 @@
-import { MockMethod } from "vite-plugin-best-mock";
-
-export const post: MockMethod = (req, res) => {
+export const post = (req, res) => {
   const { id } = req.body || {};
   const { file } = req.files || {};
   res.end(
