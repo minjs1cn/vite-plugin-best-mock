@@ -6,19 +6,13 @@
 
 Provide local and prod mocks for vite.
 
-A mock plugin for vite, and support the local environment and production environment at the same time. Connect service middleware is used locally, mockjs is used online.
+A mock plugin for vite, and support the local environment and production environment at the same time. Connect service middleware is used locally, runtime not yet implemented.
 
 ### Install (yarn or npm)
 
 **node version:** >=12.0.0
 
 **vite version:** >=2.0.0
-
-```bash
-yarn add mockjs
-# or
-npm i  mockjs -S
-```
 
 ```bash
 yarn add vite-plugin-best-mock -D
@@ -31,12 +25,12 @@ npm i vite-plugin-best-mock -D
 **Run Example**
 
 ```bash
-
 # ts example
+cd playground
+
 yarn install
 
 yarn dev
-
 ```
 
 ## Usage
@@ -71,7 +65,6 @@ interface MockPluginConfig {
   dir?: string;
   prefix?: string;
   timeout?: [number, number];
-  logger?: boolean;
   multiparty: MultipartyConfig;
 }
 ```
@@ -85,6 +78,14 @@ interface MockPluginConfig {
 **default:** `'mock'`
 
 Set the folder where the mock .ts file is stored
+
+### prefix
+
+**type:** `string`
+
+**default:** `'/api/'`
+
+the url start with prefix will be mocked
 
 ### localEnabled
 
@@ -101,14 +102,6 @@ Set whether to enable the local mock .ts file, do not open it in the production 
 **default:** `command !=='serve'`
 
 Set whether to enable mock function for packaging
-
-### logger
-
-**type:** `boolean`
-
-**default:** `true`
-
-Whether to display the request log on the console
 
 ### multiparty
 
@@ -155,7 +148,10 @@ export const post: MockMethod = (req) => {
 ### MockMethod
 
 ```ts
-export type MockMethod = (req: Req, res: Res) => void;
+export interface MockMethod {
+  (req: Req, res: Res): any;
+  timeout?: Pick<MockConfig, "timeout">["timeout"];
+}
 ```
 
 you can refer to [Next.js](https://nextjs.org/docs/api-routes/dynamic-api-routes) Dynamic api routes.
