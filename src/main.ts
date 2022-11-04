@@ -10,7 +10,7 @@ fetch("/api/user/1/?type=123", {
   .then((res) => res.json())
   .then(console.log);
 
-fetch("/api/role/1/permission?type=123", {
+fetch("/api/role/1/permission", {
   method: "post",
   body: JSON.stringify({
     name: "qingyang",

@@ -7,11 +7,9 @@ export const get = (req, res) => {
   };
 };
 
-export const post = async (req: any, res: any) => {
-  const { id } = req.query || {};
-
+export const post = async (req, res) => {
   return {
-    id,
+    body: req.body,
     type: "permission",
   };
 };

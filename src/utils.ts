@@ -2,6 +2,25 @@ import fs from "fs";
 import path from "path";
 import { build } from "esbuild";
 import { MockConfig } from "./useMock";
+import { Connect } from "vite";
+
+export function parseJson(
+  req: Connect.IncomingMessage
+): Promise<Record<string, any>> {
+  return new Promise((resolve) => {
+    let body = "";
+    let jsonStr = {};
+    req.on("data", function (chunk) {
+      body += chunk;
+    });
+    req.on("end", function () {
+      try {
+        jsonStr = JSON.parse(body);
+      } catch (err) {}
+      resolve(jsonStr as any);
+    });
+  });
+}
 
 export function delayApi(timeout: Pick<MockConfig, "timeout">["timeout"]) {
   // 延迟n毫秒后返回结果，模拟接口延迟
