@@ -1,78 +1,119 @@
-import useMock, { MockConfig, Req, Res } from "./middlewares/mock";
-import { normalizePath, PluginOption } from "vite";
-import useMultiparty, {
-  MultipartyConfig,
-} from "./middlewares/connect-multiparty";
-import queryString from "./middlewares/query-string";
+import type { PluginOption } from "vite";
+import chokidar from "chokidar";
+import { store } from "./store";
+import { createMockRouter } from "./createMockServer";
+import { MockConfig, useMock } from "./useMock";
+import { useQueryString } from "./useQueryString";
+import { MultipartyConfig, useMultiparty } from "./useMultiparty";
+import { isFileExisted } from "./utils";
 import path from "path";
+import { createProdMockServer } from "./createProdMockServer";
 
 interface MockPluginConfig extends MockConfig {
+  /** mock文件目录 */
+  mockDir: string;
+  /** 上传相关配置 参考中间件 connect-multiparty */
   multiparty: MultipartyConfig;
+  /** 本地环境开启 */
   localEnabled: boolean;
+  /** 生产环境开启 */
   prodEnabled: boolean;
-  injectFile: string;
-  supportTs: boolean;
+  /** 运行时代码被注入的文件 默认: src/main.ts */
+  entry: string;
+  /** 运行时代码 */
+  runtimeCode: string;
 }
 
-function getDefaultPath(supportTs = true) {
-  return path.resolve(process.cwd(), `src/main.${supportTs ? "ts" : "js"}`);
+async function getEntry(entryFile = "src/main.ts") {
+  let entry = path.resolve(process.cwd(), entryFile);
+  if (await isFileExisted(entry)) {
+    return {
+      supportTs: true,
+      entry,
+    };
+  }
+  entry = path.resolve(process.cwd(), "src/main.js");
+  if (await isFileExisted(entry)) {
+    return {
+      supportTs: false,
+      entry,
+    };
+  }
+  return {
+    supportTs: false,
+    entry: undefined,
+  };
 }
 
-function mockPlugin({
-  multiparty: multipartConfig,
+export const mockPlugin = ({
+  multiparty,
   ...rest
-}: Partial<MockPluginConfig> = {}) {
+}: Partial<MockPluginConfig> = {}): PluginOption => {
   const {
+    mockDir = "mock",
     localEnabled = true,
     prodEnabled = false,
-    supportTs = true,
-    injectFile = normalizePath(getDefaultPath(supportTs)),
+    runtimeCode = `
+      console.log('runtime not yet implemented');
+    `,
   } = rest;
-  const injectCode = `
-		console.log('The online version has not been implemented');
-	`;
-  let config;
   let isDev = true;
+  let needSourcemap = false;
+  let { entry } = rest;
 
   return {
     name: "vite-plugin-best-mock",
     enforce: "pre",
 
-    configResolved(resolvedConfig) {
-      config = resolvedConfig;
-      isDev = config.command === "serve";
-      console.log("injectFile", injectFile);
+    async configResolved(resolvedConfig) {
+      isDev = resolvedConfig.command === "serve";
+      const res = await getEntry(entry);
+      if (res.entry) {
+        entry = res.entry;
+      }
+      needSourcemap = !!resolvedConfig.build.sourcemap;
+
+      async function createMock() {
+        store.mockData = await createMockRouter(mockDir);
+        if (prodEnabled) {
+          createProdMockServer(mockDir, store.mockData, res.supportTs);
+        }
+      }
+      createMock();
+      chokidar.watch([mockDir]).on("all", async () => {
+        /**
+         * TODO: 可以根据事件类型做一些优化，而非全量更新
+         */
+        createMock();
+      });
     },
 
-    configureServer(server) {
+    configureServer: async (server) => {
       if (localEnabled) {
-        server.middlewares.use(queryString());
-        server.middlewares.use(useMultiparty(multipartConfig));
-        server.middlewares.use(useMock(rest));
+        server.middlewares.use(useQueryString());
+        server.middlewares.use(useMultiparty(multiparty));
+        server.middlewares.use(useMock());
       }
     },
 
     transform(code: string, id: string) {
-      if (isDev || !injectFile || !id.endsWith(injectFile)) {
+      // 开发环境 或 入口不存在
+      if (isDev || !entry || !id.endsWith(entry)) {
         return null;
       }
 
+      // 线上环境未开启
       if (!prodEnabled) {
         return null;
       }
 
       return {
-        map: null,
-        code: `${code}\n${injectCode}`,
+        map: needSourcemap ? this.getCombinedSourcemap() : null,
+        code: `${code}\n${runtimeCode}`,
       };
     },
-  } as PluginOption;
-}
+  };
+};
 
-export function definedApi(fun: MockMethod) {
-  return fun;
-}
-
-export type MockMethod = (req: Req, res: Res) => any;
-
-export { useMock, mockPlugin, useMultiparty };
+export * from "./useMock";
+export type { MockData } from "./store";

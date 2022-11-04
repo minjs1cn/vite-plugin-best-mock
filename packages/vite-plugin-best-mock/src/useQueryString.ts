@@ -1,7 +1,7 @@
 import qs from "qs";
 import { Connect } from "vite";
 
-export default function queryString(): Connect.NextHandleFunction {
+export function useQueryString(): Connect.NextHandleFunction {
   return (req, _, next) => {
     const { originalUrl = "" } = req;
     const [, search] = originalUrl.split("?");
