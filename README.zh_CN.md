@@ -6,7 +6,7 @@
 
 为 Vite 提供开发和生产环境的 Mock 服务
 
-一个 Vite 的 Mock 插件, 同时支持本地和线上环境. 本地是基于 Connect 中间件实现的, 线上是通过 mockjs 实现的（对，现在还没有实现^~^）。
+一个 Vite 的 Mock 插件, 同时支持本地和线上环境. 本地是基于 Connect 中间件实现的, 线上还未实现。
 
 ### Install (yarn or npm)
 
@@ -14,11 +14,6 @@
 
 **vite version:** >=2.0.0
 
-```bash
-yarn add mockjs
-# or
-npm i  mockjs -S
-```
 
 ```bash
 yarn add vite-plugin-best-mock -D
@@ -31,12 +26,12 @@ npm i vite-plugin-best-mock -D
 **Run Example**
 
 ```bash
-
 # ts example
+cd playground
+
 yarn install
 
 yarn dev
-
 ```
 
 ## Usage
@@ -84,6 +79,14 @@ interface MockPluginConfig {
 
 存放 mock 文件的文件夹路径
 
+### prefix
+
+**type:** `string`
+
+**default:** `'/api/'`
+
+以prefix开头的url会被mock拦截
+
 ### localEnabled
 
 **type:** `boolean`
@@ -99,14 +102,6 @@ interface MockPluginConfig {
 **default:** `command !=='serve'`
 
 是否允许线上环境开启 mock 服务
-
-### logger
-
-**type:** `boolean`
-
-**default:** `true`
-
-是否开启 log 日志
 
 ### multiparty
 
@@ -153,7 +148,10 @@ export const post: MockMethod = (req) => {
 
 ```ts
 
-export type MockMethod = (req: Req, res: Res) => void;
+export interface MockMethod {
+  (req: Req, res: Res): any;
+  timeout?: Pick<MockConfig, "timeout">["timeout"];
+}
 
 ```
 

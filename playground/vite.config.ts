@@ -4,7 +4,7 @@ import { mockPlugin } from "vite-plugin-best-mock";
 export default defineConfig({
   plugins: [
     mockPlugin({
-      prefix: "/api",
+      prodEnabled: true,
     }),
   ],
 });

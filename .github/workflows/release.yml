@@ -25,6 +25,7 @@ jobs:
           git config user.email "<>"
       - name: Build
         run: |
+          cd packages/vite-plugin-best-mock
           yarn
           yarn build
       - name: publish

@@ -2,15 +2,5 @@
   "name": "vite-plugin-best-mock",
   "private": true,
   "repository": "git@github.com:minjs1cn/vite-plugin-best-mock.git",
-  "license": "MIT",
-  "scripts": {
-    "dev": "pnpm run dev --filter vite-plugin-best-mock",
-    "build": "pnpm run build --filter vite-plugin-best-mock",
-    "preview": "pnpm run build --filter playground",
-    "playground": "pnpm run dev --filter playground",
-    "pre": "pnpm add vite-plugin-best-mock --filter playground"
-  },
-  "dependencies": {
-    "tsup": "^6.3.0"
-  }
+  "license": "MIT"
 }

@@ -25,6 +25,7 @@ jobs:
           git config user.email "<>"
       - name: Build
         run: |
+          cd playground
           yarn
           yarn preview
       - name: Deploy
